@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WE KNOW ALL — Великие Полководцы и Правители</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root[data-theme="dark"] {
+      --bg-gradient: linear-gradient(135deg, #0A1910 0%, #050C08 100%);
+      --card-bg: rgba(15, 35, 23, 0.75);
+      --card-border: rgba(52, 211, 153, 0.2);
+      --text-main: #ECFDF5;
+      --text-muted: #A7F3D0;
+      --accent: #34D399;
+      --accent-gold: #F59E0B;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      --modal-bg: rgba(6, 20, 13, 0.95);
+    }
+
+    :root[data-theme="light"] {
+      --bg-gradient: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+      --card-bg: rgba(255, 255, 255, 0.75);
+      --card-border: rgba(255, 255, 255, 0.9);
+      --text-main: #1B4332;
+      --text-muted: #2D6A4F;
+      --accent: #2E7D32;
+      --accent-gold: #B45309;
+      --shadow: 0 10px 30px rgba(46, 125, 50, 0.12);
+      --modal-bg: rgba(232, 245, 233, 0.95);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--text-main);
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      min-height: 100vh;
+      line-height: 1.6;
+      transition: all 0.3s ease;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .theme-toggle-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-toggle-btn:hover {
+      transform: scale(1.05);
+      border-color: var(--accent);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 15px;
+    }
+
+    .subtitle {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-img-container {
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .card:hover .card-img {
+      transform: scale(1.05);
+    }
+
+    .card-body {
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .tag {
+      display: inline-block;
+      align-self: flex-start;
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .card-role {
+      font-size: 0.9rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .btn-more {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .card:hover .btn-more {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: var(--modal-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      max-width: 800px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 40px;
+      position: relative;
+      box-shadow: var(--shadow);
+      color: var(--text-main);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      font-size: 1.8rem;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .modal-header {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 30px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .modal-img {
+      width: 180px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+
+    .modal-title-area h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      line-height: 1.1;
+    }
+
+    .modal-body h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: var(--accent-gold);
+      margin: 20px 0 10px 0;
+    }
+
+    .modal-body p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-bottom: 20px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <nav>
+      <div class="logo">WE KNOW ALL</div>
+      <button class="theme-toggle-btn" id="themeToggle">
+        <span id="themeIcon">☀️</span> <span id="themeText">Светлая тема</span>
+      </button>
+    </nav>
+
+    <header>
+      <h1>Великие Полководцы и Правители</h1>
+      <p class="subtitle">Полная интерактивная база знаний о стратегиях, личностях и масштабных войнах, изменивших историю Европы XVIII–XIX веков.</p>
+    </header>
+
+    <div class="grid">
+      <div class="card" onclick="openModal('napoleon')">
+        <div class="card-img-container">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Jacques-Louis_David_-_The_Emperor_Napoleon_in_His_Study_at_the_Tuileries_-_Google_Art_Project.jpg" alt="Наполеон Бонапарт" class="card-img">
+        </div>
+        <div class="card-body">
+          <span class="tag">Французская Империя</span>
+          <h3>Наполеон I Бонапарт</h3>
+          <div class="card-role">Император и Гений Тактики</div>
+          <p>Прошёл путь от корсиканского артиллериста до правителя всей Европы. Реформировал военное дело и создал Кодекс Наполеона.</p>
+          <button class="btn-more">Читать подробнее</button>
+        </div>
+      </div>
+
+      <div class="card" onclick="openModal('wellington')">
+        <div class="card-img-container">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Arthur_Wellesley_1st_Duke_of_Wellington_by_Sir_Thomas_Lawrence.jpg" alt="Герцог Веллингтон" class="card-img">
+        </div>
+        <div class="card-body">
+          <span class="tag">Великобритания</span>
+          <h3>Артур Уэлсли (Веллингтон)</h3>
+          <div class="card-role">Фельдмаршал и Победитель при Ватерлоо</div>
+          <p>Непревзойдённый мастер оборонительной тактики. Переиграл лучшую маршальскую гвардию Франции в Испании и Бельгии.</p>
+          <button class="btn-more">Читать подробнее</button>
+        </div>
+      </div>
+
+      <div class="card" onclick="openModal('kutuzov')">
+        <div class="card-img-container">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/Kutuzov_by_Volkov.jpg" alt="Михаил Кутузов" class="card-img">
+        </div>
+        <div class="card-body">
+          <span class="tag">Российская Империя</span>
+          <h3>Михаил Кутузов</h3>
+          <div class="card-role">Генерал-Фельдмаршал</div>
+          <p>Ученик Суворова. Архитектор победы в Отечественной войне 1812 года, уничтоживший Великую армию стратегией измора.</p>
+          <button class="btn-more">Читать подробнее</button>
+        </div>
+      </div>
+
+      <div class="card" onclick="openModal('murat')">
+        <div class="card-img-container">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Joachim_Murat_02.jpg" alt="Иоахим Мюрат" class="card-img">
+        </div>
+        <div class="card-body">
+          <span class="tag">Франция / Неаполь</span>
+          <h3>Иоахим Мюрат</h3>
+          <div class="card-role">Маршал и Король Неаполя</div>
+          <p>«Первый кавалерист Европы». Известен своей невероятной храбростью и сокрушительными атаками тяжёлой кавалерии.</p>
+          <button class="btn-more">Читать подробнее</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>© WE KNOW ALL • Историческая интерактивная база знаний</p>
+    </footer>
+  </div>
+
+  <div class="modal" id="infoModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal()">✕</button>
+      <div class="modal-header">
+        <img src="" id="modalImg" class="modal-img" alt="">
+        <div class="modal-title-area">
+          <span class="tag" id="modalTag"></span>
+          <h2 id="modalTitle"></h2>
+          <div class="card-role" id="modalRole"></div>
+        </div>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      napoleon: {
+        title: "Наполеон I Бонапарт",
+        tag: "Французская Империя",
+        role: "Император и Гений Тактики",
+        img: "https://upload.wikimedia.org/wikipedia/commons/5/50/Jacques-Louis_David_-_The_Emperor_Napoleon_in_His_Study_at_the_Tuileries_-_Google_Art_Project.jpg",
+        body: `
+          <h4>Биография и приход к власти</h4>
+          <p>Родился на Корсике в 1769 году. Проявил себя при осаде Тулона в 1793 году, получив чин бригадного генерала. В 1799 году совершил государственный переворот, а в 1804 году провозгласил себя Императором французов.</p>
+          <h4>Военный гений и тактика</h4>
+          <p>Наполеон совершил революцию в военном искусстве, создав корпусную систему, позволявшую армиям передвигаться независимо и быстро соединяться для нанесения решающего удара.</p>
+          <h4>Главные сражения</h4>
+          <p>• <strong>Аустерлиц (1805):</strong> «Битва трёх императоров» — вершина тактического гения Наполеона.<br>
+          • <strong>Бородино (1812):</strong> Кровавое сражение под Москвой.<br>
+          • <strong>Ватерлоо (1815):</strong> Финальная битва, завершившая эпоху Наполеоновских войн.</p>
+        `
+      },
+      wellington: {
+        title: "Артур Уэлсли, Герцог Веллингтон",
+        tag: "Великобритания",
+        role: "Фельдмаршал и Победитель при Ватерлоо",
+        img: "https://upload.wikimedia.org/wikipedia/commons/3/3d/Arthur_Wellesley_1st_Duke_of_Wellington_by_Sir_Thomas_Lawrence.jpg",
+        body: `
+          <h4>Мастер защиты</h4>
+          <p>Британский полководец и государственный деятель. Приобрёл известность во время Пиренейской войны, где методично разбивал войска французских маршалов.</p>
+          <h4>Битва при Ватерлоо</h4>
+          <p>В 1815 году возглавил объединённую англо-голландскую армию и удерживал позиции против непрерывных атак Наполеона до подхода прусской армии Блюхера.</p>
+        `
+      },
+      kutuzov: {
+        title: "Михаил Илларионович Кутузов",
+        tag: "Российская Империя",
+        role: "Генерал-Фельдмаршал",
+        img: "https://upload.wikimedia.org/wikipedia/commons/e/ea/Kutuzov_by_Volkov.jpg",
+        body: `
+          <h4>Спаситель Отечества</h4>
+          <p>Ученик А. В. Суворова, прошедший через русско-турецкие войны. Принял командование русской армией в критический момент 1812 года.</p>
+          <h4>Стратегия 1812 года</h4>
+          <p>После Бородинского сражения принял трудное решение сдать Москву, сохраняя армию. Стратегия истощения привела к полному краху Великой армии Наполеона.</p>
+        `
+      },
+      murat: {
+        title: "Иоахим Мюрат",
+        tag: "Франция / Неаполь",
+        role: "Маршал и Король Неаполя",
+        img: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Joachim_Murat_02.jpg",
+        body: `
+          <h4>Король Кавалерии</h4>
+          <p>Своей отвагой лично возглавлял кавалерийские атаки. В битве при Эйлау (1807) провёл одну из самых грандиозных кавалерийских атак в истории, поведя за собой 12 000 всадников.</p>
+        `
+      }
+    };
+
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      if (currentTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeIcon.textContent = '🌙';
+        themeText.textContent = 'Тёмная тема';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Светлая тема';
+      }
+    });
+
+    function openModal(id) {
+      const item = data[id];
+      if (!item) return;
+
+      document.getElementById('modalImg').src = item.img;
+      document.getElementById('modalTag').textContent = item.tag;
+      document.getElementById('modalTitle').textContent = item.title;
+      document.getElementById('modalRole').textContent = item.role;
+      document.getElementById('modalBody').innerHTML = item.body;
+
+      document.getElementById('infoModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('infoModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('infoModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+</html>
